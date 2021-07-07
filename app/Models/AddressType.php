@@ -5,7 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Province_city extends Model
+class AddressType extends Model
 {
     use HasFactory;
+
+    public function addresses()
+    {
+        return $this->hasMany(Address::class, 'address_type_id');
+    }
 }

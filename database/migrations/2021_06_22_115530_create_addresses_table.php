@@ -22,8 +22,8 @@ class CreateAddressesTable extends Migration
             $table->bigInteger('country_id');
             $table->bigInteger('province_id');
             $table->bigInteger('city_id');
-            $table->timestamp('deleted_at');
-            $table->bigInteger('deleted_by');
+            $table->bigInteger('deleted_by')->nullable(true);
+            $table->timestamp('deleted_at')->nullable(true);
             $table->timestamps();
         });
     }
