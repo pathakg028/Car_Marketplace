@@ -4,15 +4,140 @@ scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 "A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
+type User {
+    id: ID!
+    email: String!
+    first_name: String!
+    last_name: String!
+    name: String
+    username: String!
+    email_verified_at: DateTime
+    created_at: DateTime!
+    updated_at: DateTime!
+}
+
+type Category {
+    id: ID!
+    name: String!
+}
+
+type City {
+    id: ID!
+    name: String!
+    province_id: Province @belongsTo
+}
+
+type Address {
+    id: ID!
+    address1: String!
+    address2: String!
+    zipcode: String!
+    address_type_id: Int!
+    country: Country @belongsTo
+    province_id: Int!
+    city_id: Int!
+    deleted_by: Int!
+    deleted_at: DateTime
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+type Address_Type {
+    id: ID!
+    name: String!
+    created_at: DateTime
+    updated_at: DateTime
+    created_by: User @belongsTo
+    updated_by: User @belongsTo
+    deleted_at: DateTime
+    deleted_by: User @belongsTo
+}
+
+
+type Country {
+    id: ID!
+    capital: String!
+    citizenship: String!
+    country_code: String!
+    currency: String!
+    currency_code: String!
+    currency_sub_unit: String!
+    currency_symbol: String!
+    currency_decimals: Int
+    full_name: String!
+    iso_3166_2: String
+    iso_3166_3: String
+    name: String!
+    region_code: String!
+    sub_region_code: String!
+    eea: Int
+    calling_code: String!
+    flag: String!
+}
+
+type Province {
+    id: ID!
+    name: String!
+    country_id: Int!
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+type City {
+    id: ID!
+    name: String!
+    province_id: Int!
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+type Advertisement {
+    id: ID!
+    category_id: Category @belongsTo
+    title: String!
+    description: String!
+    model: String!
+    model_year: Int!
+    seller_id: User @belongsTo
+    created_at: DateTime
+    updated_at: DateTime
+    is_paid: String
+    is_reviewed: String
+    reviewed_by: User @belongsTo
+    reviewed_at: String
+}
+
+type Review {
+    id: ID!
+    user_id: User @belongsTo
+    advertisement_id: Advertisement @belongsTo
+    rating: String!
+    comment: String
+    is_helpful: String
+    report_abuse: String
+    reported_by: User @belongsTo
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+type Bookmark {
+    id: ID!
+    user_id: User @belongsTo
+    advertisement_id: Advertisement @belongsTo
+    created_at: DateTime
+    updated_at: DateTime
+}
+
 type Query {
     users: [User!]! @paginate(defaultCount: 10)
     user(id: ID @eq): User @find
+    address(id: ID @eq): Address @find
 }
 
-type User {
-    id: ID!
-    name: String!
-    email: String!
-    created_at: DateTime!
-    updated_at: DateTime!
+type Mutation {
+    updateCity(
+        id: ID!,
+        name: String,
+        province_id: Int
+    ): City @update
 }
